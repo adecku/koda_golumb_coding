@@ -5,7 +5,14 @@ class GolombCoder:
     def __init__(self, m):
         self.m = m
 
+    def zigzag_encode(self, num):
+        return (num << 1) ^ (num >> 31)
+
+    def zigzag_decode(self, num):
+        return (num >> 1) ^ -(num & 1)
+
     def encode(self, num):
+        num = self.zigzag_encode(num)
         # Cześć unarna
         q = num // self.m
         # Cześć binarna
@@ -48,4 +55,6 @@ class GolombCoder:
             # Konwersja bitów na liczbę dziesiętną
             r = int(code[i:i + b], 2) - cutoff
 
-        return q * self.m + r
+        num = q * self.m + r
+
+        return self.zigzag_decode(num)

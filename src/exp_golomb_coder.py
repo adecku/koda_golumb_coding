@@ -3,7 +3,14 @@ class ExpGolombCoder:
         # przesunięcie liczby -> k większe dla większych liczb
         self.k = k
 
+    def zigzag_encode(self, num):
+        return (num << 1) ^ (num >> 31)
+
+    def zigzag_decode(self, num):
+        return (num >> 1) ^ -(num & 1)
+
     def encode(self, num):
+        num = self.zigzag_encode(num)
         # Dodajemy przesunięcie o 1 bit
         num += (1 << self.k)
         b = num.bit_length()
@@ -21,4 +28,4 @@ class ExpGolombCoder:
         length = i + 1
         value = int(code[i:i + length], 2) - (1 << self.k)
 
-        return value
+        return self.zigzag_decode(value)
