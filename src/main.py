@@ -26,3 +26,4 @@ if __name__ == '__main__':
     diff_image = differential_encoding(image)
     print(diff_image)
     decoded_image = differential_decoding(diff_image)
+    
