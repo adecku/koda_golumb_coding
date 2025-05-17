@@ -10,6 +10,8 @@ class ExpGolombCoder:
         return (num >> 1) ^ -(num & 1)
 
     def encode(self, num):
+        # Convert numpy integer to Python integer
+        num = int(num)
         num = self.zigzag_encode(num)
         # Dodajemy przesunięcie o 1 bit
         num += (1 << self.k)

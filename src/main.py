@@ -1,29 +1,47 @@
 import numpy as np
-
-from golomb_coder import GolombCoder
-from exp_golomb_coder import ExpGolombCoder
 from data_operations import *
+from image_encoder import encode_image_both_methods
+from image_decoder import decode_image_both_methods
 
 if __name__ == '__main__':
-    print("GOLOMB")
-    coder = GolombCoder(7)
-    encoded = coder.encode(-21)
-    print(encoded)
-    decoded = coder.decode(encoded)
-    print(decoded)
+    # File paths
+    # original_image = "data/obrazy_testowe/lena.pgm"
+    # golomb_compressed = "data/obrazy_testowe/lena_golomb.bin"
+    # exp_golomb_compressed = "data/obrazy_testowe/lena_exp_golomb.bin"
+    # golomb_decoded = "data/obrazy_testowe/lena_decoded_golomb.pgm"
+    # exp_golomb_decoded = "data/obrazy_testowe/lena_decoded_exp_golomb.pgm"
 
-    # ---------------------------------------------
-    print("EXP GOLOMB")
-    exp_coder = ExpGolombCoder(0)
-    encoded = exp_coder.encode(-200)
-    print(encoded)
-    decoded = exp_coder.decode(encoded)
-    print(decoded)
+    original_image = "data/rozklady_testowe/normal_30.pgm"
+    golomb_compressed = "data/rozklady_testowe/normal_30_golomb.bin"
+    exp_golomb_compressed = "data/rozklady_testowe/normal_30_exp_golomb.bin"
+    golomb_decoded = "data/rozklady_testowe/normal_30_decoded_golomb.pgm"
+    exp_golomb_decoded = "data/rozklady_testowe/normal_30_decoded_exp_golomb.pgm"
 
-    # ---------------------------------------------
-    image = load_image("../data/obrazy_testowe/mandril.pgm")
-    print(image)
-    diff_image = differential_encoding(image)
-    print(diff_image)
-    decoded_image = differential_decoding(diff_image)
+    # Encode
+    print("=== Encoding ===")
+    encode_image_both_methods(
+        original_image,
+        golomb_compressed,
+        exp_golomb_compressed,
+        golomb_m=8,
+        exp_golomb_k=2
+    )
+
+    # Decode
+    print("\n=== Decoding ===")
+    decode_image_both_methods(
+        golomb_compressed,
+        exp_golomb_compressed,
+        golomb_decoded,
+        exp_golomb_decoded
+    )
+
+    # Verify reconstruction
+    original = load_image(original_image)
+    golomb_result = load_image(golomb_decoded)
+    exp_golomb_result = load_image(exp_golomb_decoded)
+
+    print("\n=== Verification ===")
+    print("Golomb coding reconstruction:", "Perfect" if np.array_equal(original, golomb_result) else "Loss occurred")
+    print("Exp-Golomb coding reconstruction:", "Perfect" if np.array_equal(original, exp_golomb_result) else "Loss occurred")
     
