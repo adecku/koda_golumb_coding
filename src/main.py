@@ -16,6 +16,7 @@ if __name__ == '__main__':
     exp_golomb_compressed = "data/rozklady_testowe/normal_30_exp_golomb.bin"
     golomb_decoded = "data/rozklady_testowe/normal_30_decoded_golomb.pgm"
     exp_golomb_decoded = "data/rozklady_testowe/normal_30_decoded_exp_golomb.pgm"
+    #dodana linijka testowa
 
     # Encode
     print("=== Encoding ===")
@@ -24,7 +25,7 @@ if __name__ == '__main__':
         golomb_compressed,
         exp_golomb_compressed,
         golomb_m=8,
-        exp_golomb_k=2
+        exp_golomb_k=4
     )
 
     # Decode
@@ -44,4 +45,4 @@ if __name__ == '__main__':
     print("\n=== Verification ===")
     print("Golomb coding reconstruction:", "Perfect" if np.array_equal(original, golomb_result) else "Loss occurred")
     print("Exp-Golomb coding reconstruction:", "Perfect" if np.array_equal(original, exp_golomb_result) else "Loss occurred")
-    
+    print("Finished")
